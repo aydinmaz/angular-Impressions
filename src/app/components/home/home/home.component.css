@@ -21,3 +21,8 @@ tr:nth-child(even) {
 .data-table {
   margin: 30px 30px 30px 30px;
 }
+
+.imp-num {
+  width: 15%;
+  margin: auto;
+}
