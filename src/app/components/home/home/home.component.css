@@ -26,3 +26,8 @@ tr:nth-child(even) {
   width: 15%;
   margin: auto;
 }
+
+.imp {
+  width: 35%;
+  margin: auto;
+}
