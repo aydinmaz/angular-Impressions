@@ -18,9 +18,12 @@ export interface DeviceData {
 })
 export class HomeComponent implements OnInit, AfterViewInit {
 
+  // excel data table
   data: DeviceData[] = [];
   dataSource = new MatTableDataSource<DeviceData>();
   displayedColumns: string[] = ['id', 'lat', 'lang', 'time'];
+
+  isLoaded = false;
 
   @ViewChild(MatPaginator) paginator: MatPaginator | undefined;
 
@@ -41,6 +44,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
       const bstr: string = e.target.result;
       this.data = this.service.uploadedFile(bstr);
       this.dataSource.data = this.data;
+      this.isLoaded = true;
       console.log('data', this.data);
     };
     reader.readAsBinaryString(target.files[0]);

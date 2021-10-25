@@ -35,7 +35,7 @@
             <mat-paginator [pageSizeOptions]="[10,15,25,100]" aria-label="Select page of users"></mat-paginator>
         </div>
     </mat-tab>
-    <mat-tab label="Impressions">
+    <mat-tab label="Impressions" *ngIf="isLoaded">
         Impressions
     </mat-tab>
 </mat-tab-group>
