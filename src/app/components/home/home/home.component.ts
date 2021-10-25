@@ -38,6 +38,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   impDataSource: CountPerHour[];
 
   isLoaded = false;
+  isLoading = false;
 
   displayedColumnsImp: string[] = ['hour', 'count'];
   hours: CountPerHour[] = [
@@ -116,6 +117,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   uploadedFile = (event: any) => {
+    this.isLoading = true;
     const target: DataTransfer = event.target as DataTransfer;
     const reader: FileReader = new FileReader();
     reader.onload = (e: any) => {
@@ -123,6 +125,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
       this.data = this.service.uploadedFile(bstr);
       this.dataSource.data = this.data;
       this.isLoaded = true;
+      this.isLoading = false;
       this.createIdArray();
       console.log('data', this.data);
     };

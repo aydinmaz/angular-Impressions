@@ -3,6 +3,10 @@
         matTooltip="select excel file to show data" placeholder="Upload file" accept=".csv">
 </mat-card>
 
+<div class="loading-shade" *ngIf="isLoading">
+    <mat-spinner></mat-spinner>
+</div>
+
 <mat-tab-group mat-align-tabs="start">
     <mat-tab label="Data Table">
         <div class="mat-elevation-z8 data-table">
