@@ -4,3 +4,20 @@ mat-card {
   margin-top: 30px;
   text-align: center;
 }
+
+td,
+th {
+  width: 25%;
+}
+
+tr:nth-child(even) {
+  background-color: #efefef;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.data-table {
+  margin: 30px 30px 30px 30px;
+}

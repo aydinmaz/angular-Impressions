@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 import { ImpressionService } from 'src/app/_services/impression.service';
 
 
@@ -14,11 +16,23 @@ export interface DeviceData {
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
 })
-export class HomeComponent implements OnInit {
-  data = [];
+export class HomeComponent implements OnInit, AfterViewInit {
+
+  data: DeviceData[] = [];
+  dataSource = new MatTableDataSource<DeviceData>();
+  displayedColumns: string[] = ['id', 'lat', 'lang', 'time'];
+
+  @ViewChild(MatPaginator) paginator: MatPaginator | undefined;
+
   constructor(private service: ImpressionService) {}
 
   ngOnInit(): void {}
+
+
+  ngAfterViewInit(): void {
+    this.dataSource.paginator = this.paginator || null;
+  }
+
 
   uploadedFile = (event: any) => {
     const target: DataTransfer = event.target as DataTransfer;
@@ -26,6 +40,7 @@ export class HomeComponent implements OnInit {
     reader.onload = (e: any) => {
       const bstr: string = e.target.result;
       this.data = this.service.uploadedFile(bstr);
+      this.dataSource.data = this.data;
       console.log('data', this.data);
     };
     reader.readAsBinaryString(target.files[0]);
