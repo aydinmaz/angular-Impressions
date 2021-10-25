@@ -1,6 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { ImpressionService } from 'src/app/_services/impression.service';
 
+
+export interface DeviceData {
+  device_id: number;
+  lat: number;
+  lng: number;
+  timestamp: number;
+}
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
