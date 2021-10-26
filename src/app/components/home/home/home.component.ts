@@ -134,55 +134,119 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   // count impressions per device per hour
   countImpHourly = (el: DeviceData) => {
-    const impDate = new Date(el.timestamp).getHours();
-    if (impDate < 1) {
-      this.hours[0].count++;
-    } else if (impDate < 2) {
-      this.hours[1].count++;
-    } else if (impDate < 3) {
-      this.hours[2].count++;
-    } else if (impDate < 4) {
-      this.hours[3].count++;
-    } else if (impDate < 5) {
-      this.hours[4].count++;
-    } else if (impDate < 6) {
-      this.hours[5].count++;
-    } else if (impDate < 7) {
-      this.hours[6].count++;
-    } else if (impDate < 8) {
-      this.hours[7].count++;
-    } else if (impDate < 9) {
-      this.hours[8].count++;
-    } else if (impDate < 10) {
-      this.hours[9].count++;
-    } else if (impDate < 11) {
-      this.hours[10].count++;
-    } else if (impDate < 12) {
-      this.hours[11].count++;
-    } else if (impDate < 13) {
-      this.hours[12].count++;
-    } else if (impDate < 14) {
-      this.hours[13].count++;
-    } else if (impDate < 15) {
-      this.hours[14].count++;
-    } else if (impDate < 16) {
-      this.hours[15].count++;
-    } else if (impDate < 17) {
-      this.hours[16].count++;
-    } else if (impDate < 18) {
-      this.hours[17].count++;
-    } else if (impDate < 19) {
-      this.hours[18].count++;
-    } else if (impDate < 20) {
-      this.hours[19].count++;
-    } else if (impDate < 21) {
-      this.hours[20].count++;
-    } else if (impDate < 22) {
-      this.hours[21].count++;
-    } else if (impDate < 23) {
-      this.hours[22].count++;
-    } else if (impDate < 24) {
-      this.hours[23].count++;
+    const impHour = new Date(el.timestamp).getHours();
+    const j = new Date(el.timestamp);
+    if ( impHour < 12 ) {
+      if ( impHour < 6 ) {
+        if ( impHour < 3) {
+          if (impHour < 1) {
+            this.hours[0].count++;
+          } else if ( impHour < 2 ) {
+            this.hours[1].count++;
+          } else {this.hours[2].count++; }
+        } else {
+          if (impHour < 4) {
+            this.hours[3].count++;
+          }else if ( impHour < 5 ) {
+            this.hours[4].count++;
+          } else { this.hours[5].count++; }
+        }
+      } else {
+        if ( impHour < 9) {
+          if (impHour < 7) {
+            this.hours[6].count++;
+          } else if ( impHour < 8 ) {
+            this.hours[7].count++;
+          } else {this.hours[8].count++; }
+        } else {
+          if (impHour < 10) {
+            this.hours[9].count++;
+          } else if (impHour < 11) {
+            this.hours[10].count++;
+          } else { this.hours[11].count++; }
+        }
+      }
+    } else {
+      if ( impHour < 18 ) {
+        if ( impHour < 15) {
+          if (impHour < 13) {
+            this.hours[12].count++;
+          } else if ( impHour < 14 ) {
+            this.hours[13].count++;
+          } else {this.hours[14].count++; }
+        } else {
+          if (impHour < 16) {
+            this.hours[15].count++;
+          }else if ( impHour < 17 ) {
+            this.hours[16].count++;
+          } else { this.hours[17].count++; }
+        }
+      } else {
+        if ( impHour < 21) {
+          if (impHour < 19) {
+            this.hours[18].count++;
+          } else if ( impHour < 20 ) {
+            this.hours[19].count++;
+          } else {this.hours[20].count++; }
+        } else {
+          if (impHour < 22) {
+            this.hours[21].count++;
+          } else if (impHour < 23) {
+            this.hours[22].count++;
+          } else { this.hours[23].count++; }
+        }
+
+      }
+
     }
+    /* if (impHour < 1) {
+      this.hours[0].count++;
+    } else if (impHour < 2) {
+      this.hours[1].count++;
+    } else if (impHour < 3) {
+      this.hours[2].count++;
+    } else if (impHour < 4) {
+      this.hours[3].count++;
+    } else if (impHour < 5) {
+      this.hours[4].count++;
+    } else if (impHour < 6) {
+      this.hours[5].count++;
+    } else if (impHour < 7) {
+      this.hours[6].count++;
+    } else if (impHour < 8) {
+      this.hours[7].count++;
+    } else if (impHour < 9) {
+      this.hours[8].count++;
+    } else if (impHour < 10) {
+      this.hours[9].count++;
+    } else if (impHour < 11) {
+      this.hours[10].count++;
+    } else if (impHour < 12) {
+      this.hours[11].count++;
+    } else if (impHour < 13) {
+      this.hours[12].count++;
+    } else if (impHour < 14) {
+      this.hours[13].count++;
+    } else if (impHour < 15) {
+      this.hours[14].count++;
+    } else if (impHour < 16) {
+      this.hours[15].count++;
+    } else if (impHour < 17) {
+      this.hours[16].count++;
+    } else if (impHour < 18) {
+      this.hours[17].count++;
+    } else if (impHour < 19) {
+      this.hours[18].count++;
+    } else if (impHour < 20) {
+      this.hours[19].count++;
+    } else if (impHour < 21) {
+      this.hours[20].count++;
+    } else if (impHour < 22) {
+      this.hours[21].count++;
+    } else if (impHour < 23) {
+      this.hours[22].count++;
+    } else if (impHour < 24) {
+      this.hours[23].count++;
+    } */
   }
 }
