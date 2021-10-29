@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
@@ -70,7 +71,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator | undefined;
 
-  constructor(private service: ImpressionService) {}
+  constructor(
+    private service: ImpressionService,
+    private snackBar: MatSnackBar
+  ) {}
 
   ngOnInit(): void {
     this.filteredOptions = this.deviceControl.valueChanges.pipe(
@@ -119,85 +123,114 @@ export class HomeComponent implements OnInit, AfterViewInit {
   uploadedFile = (event: any) => {
     this.isLoading = true;
     const target: DataTransfer = event.target as DataTransfer;
-    const reader: FileReader = new FileReader();
-    reader.onload = (e: any) => {
-      const bstr: string = e.target.result;
-      this.data = this.service.uploadedFile(bstr);
-      this.dataSource.data = this.data;
-      this.isLoaded = true;
-      this.isLoading = false;
-      this.createIdArray();
-      console.log('data', this.data);
-    };
-    reader.readAsBinaryString(target.files[0]);
+    const typeOfFile = target.files[0].type;
+    // if (typeOfFile === 'application/vnd.ms-excel') {
+    if (target.files[0].name.includes('.csv')) {
+      const reader: FileReader = new FileReader();
+      reader.onload = (e: any) => {
+        const bstr: string = e.target.result;
+        this.data = this.service.uploadedFile(bstr);
+        if (this.data[0].device_id && this.data[0].lat) {
+          this.dataSource.data = this.data;
+          this.isLoaded = true;
+          this.isLoading = false;
+          this.createIdArray();
+        } else {
+          this.openSnackBar('seleziona il tipo di file corretto', 'error');
+        }
+      };
+      reader.readAsBinaryString(target.files[0]);
+    } else {
+      this.openSnackBar('Questo non è un file excel', 'error');
+    }
+  }
+
+  openSnackBar(message: string, action?: string): void {
+    this.isLoading = false;
+    this.dataSource.data = [];
+    this.snackBar.open(message, action, { duration: 3000 });
   }
 
   // count impressions per device per hour
   countImpHourly = (el: DeviceData) => {
     const impHour = new Date(el.timestamp).getHours();
     const j = new Date(el.timestamp);
-    if ( impHour < 12 ) {
-      if ( impHour < 6 ) {
-        if ( impHour < 3) {
+    if (impHour < 12) {
+      if (impHour < 6) {
+        if (impHour < 3) {
           if (impHour < 1) {
             this.hours[0].count++;
-          } else if ( impHour < 2 ) {
+          } else if (impHour < 2) {
             this.hours[1].count++;
-          } else {this.hours[2].count++; }
+          } else {
+            this.hours[2].count++;
+          }
         } else {
           if (impHour < 4) {
             this.hours[3].count++;
-          }else if ( impHour < 5 ) {
+          } else if (impHour < 5) {
             this.hours[4].count++;
-          } else { this.hours[5].count++; }
+          } else {
+            this.hours[5].count++;
+          }
         }
       } else {
-        if ( impHour < 9) {
+        if (impHour < 9) {
           if (impHour < 7) {
             this.hours[6].count++;
-          } else if ( impHour < 8 ) {
+          } else if (impHour < 8) {
             this.hours[7].count++;
-          } else {this.hours[8].count++; }
+          } else {
+            this.hours[8].count++;
+          }
         } else {
           if (impHour < 10) {
             this.hours[9].count++;
           } else if (impHour < 11) {
             this.hours[10].count++;
-          } else { this.hours[11].count++; }
+          } else {
+            this.hours[11].count++;
+          }
         }
       }
     } else {
-      if ( impHour < 18 ) {
-        if ( impHour < 15) {
+      if (impHour < 18) {
+        if (impHour < 15) {
           if (impHour < 13) {
             this.hours[12].count++;
-          } else if ( impHour < 14 ) {
+          } else if (impHour < 14) {
             this.hours[13].count++;
-          } else {this.hours[14].count++; }
+          } else {
+            this.hours[14].count++;
+          }
         } else {
           if (impHour < 16) {
             this.hours[15].count++;
-          }else if ( impHour < 17 ) {
+          } else if (impHour < 17) {
             this.hours[16].count++;
-          } else { this.hours[17].count++; }
+          } else {
+            this.hours[17].count++;
+          }
         }
       } else {
-        if ( impHour < 21) {
+        if (impHour < 21) {
           if (impHour < 19) {
             this.hours[18].count++;
-          } else if ( impHour < 20 ) {
+          } else if (impHour < 20) {
             this.hours[19].count++;
-          } else {this.hours[20].count++; }
+          } else {
+            this.hours[20].count++;
+          }
         } else {
           if (impHour < 22) {
             this.hours[21].count++;
           } else if (impHour < 23) {
             this.hours[22].count++;
-          } else { this.hours[23].count++; }
+          } else {
+            this.hours[23].count++;
+          }
         }
-
       }
-
     }
     /* if (impHour < 1) {
       this.hours[0].count++;
