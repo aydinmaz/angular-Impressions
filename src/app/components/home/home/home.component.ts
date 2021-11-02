@@ -41,8 +41,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
   isLoaded = false;
   isLoading = false;
 
-  displayedColumnsImp: string[] = ['hour', 'count'];
-  hours: CountPerHour[] = [
+
+displayedColumnsImp: string[] = ['hour', 'count'];
+initialHours: CountPerHour[] = [
     { hour: '00 - 01', count: 0 },
     { hour: '01 - 02', count: 0 },
     { hour: '02 - 03', count: 0 },
@@ -69,21 +70,25 @@ export class HomeComponent implements OnInit, AfterViewInit {
     { hour: '23 - 24', count: 0 },
   ];
 
-  @ViewChild(MatPaginator) paginator: MatPaginator | undefined;
+  hours = [];
 
-  constructor(
+
+
+@ViewChild(MatPaginator) paginator: MatPaginator | undefined;
+
+constructor(
     private service: ImpressionService,
     private snackBar: MatSnackBar
   ) {}
 
-  ngOnInit(): void {
+ngOnInit(): void {
     this.filteredOptions = this.deviceControl.valueChanges.pipe(
       startWith(''),
       map((value) => this._filter(value))
     );
   }
 
-  ngAfterViewInit(): void {
+ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator || null;
   }
 
@@ -98,7 +103,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   // create simple number array for dropdown
-  createIdArray = () => {
+createIdArray = () => {
     this.data.forEach((e) => {
       if (!this.ids.includes(e.device_id)) {
         this.ids.push(e.device_id);
@@ -107,20 +112,24 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   // count number of impressions per device
-  countImp = () => {
+countImp = () => {
     const id = this.deviceControl.value;
     let count = 0;
+    // to make a deep copy
+    this.hours = JSON.parse(JSON.stringify(this.initialHours));
     this.data.forEach((element) => {
       if (element.device_id === id) {
         count++;
-        this.countImpHourly(element);
+        const impHour = new Date(element.timestamp).getHours();
+        this.hours[impHour].count++;
+        // this.countImpHourly(element);
       }
     });
     this.impressions = count;
     this.impDataSource = this.hours;
   }
 
-  uploadedFile = (event: any) => {
+uploadedFile = (event: any) => {
     this.isLoading = true;
     const target: DataTransfer = event.target as DataTransfer;
     const typeOfFile = target.files[0].type;
@@ -145,17 +154,18 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }
   }
 
-  openSnackBar(message: string, action?: string): void {
+openSnackBar(message: string, action?: string): void {
     this.isLoading = false;
     this.dataSource.data = [];
     this.snackBar.open(message, action, { duration: 3000 });
   }
 
   // count impressions per device per hour
-  countImpHourly = (el: DeviceData) => {
+countImpHourly = (el: DeviceData) => {
     const impHour = new Date(el.timestamp).getHours();
-    const j = new Date(el.timestamp);
-    if (impHour < 12) {
+    this.hours = [...this.initialHours];
+    this.hours[impHour].count++;
+   /*  if (impHour < 12) {
       if (impHour < 6) {
         if (impHour < 3) {
           if (impHour < 1) {
@@ -231,55 +241,55 @@ export class HomeComponent implements OnInit, AfterViewInit {
           }
         }
       }
-    }
-    /* if (impHour < 1) {
-      this.hours[0].count++;
-    } else if (impHour < 2) {
-      this.hours[1].count++;
-    } else if (impHour < 3) {
-      this.hours[2].count++;
-    } else if (impHour < 4) {
-      this.hours[3].count++;
-    } else if (impHour < 5) {
-      this.hours[4].count++;
-    } else if (impHour < 6) {
-      this.hours[5].count++;
-    } else if (impHour < 7) {
-      this.hours[6].count++;
-    } else if (impHour < 8) {
-      this.hours[7].count++;
-    } else if (impHour < 9) {
-      this.hours[8].count++;
-    } else if (impHour < 10) {
-      this.hours[9].count++;
-    } else if (impHour < 11) {
-      this.hours[10].count++;
-    } else if (impHour < 12) {
-      this.hours[11].count++;
-    } else if (impHour < 13) {
-      this.hours[12].count++;
-    } else if (impHour < 14) {
-      this.hours[13].count++;
-    } else if (impHour < 15) {
-      this.hours[14].count++;
-    } else if (impHour < 16) {
-      this.hours[15].count++;
-    } else if (impHour < 17) {
-      this.hours[16].count++;
-    } else if (impHour < 18) {
-      this.hours[17].count++;
-    } else if (impHour < 19) {
-      this.hours[18].count++;
-    } else if (impHour < 20) {
-      this.hours[19].count++;
-    } else if (impHour < 21) {
-      this.hours[20].count++;
-    } else if (impHour < 22) {
-      this.hours[21].count++;
-    } else if (impHour < 23) {
-      this.hours[22].count++;
-    } else if (impHour < 24) {
-      this.hours[23].count++;
     } */
+    // if (impHour < 1) {
+    //   this.hours[0].count++;
+    // } else if (impHour < 2) {
+    //   this.hours[1].count++;
+    // } else if (impHour < 3) {
+    //   this.hours[2].count++;
+    // } else if (impHour < 4) {
+    //   this.hours[3].count++;
+    // } else if (impHour < 5) {
+    //   this.hours[4].count++;
+    // } else if (impHour < 6) {
+    //   this.hours[5].count++;
+    // } else if (impHour < 7) {
+    //   this.hours[6].count++;
+    // } else if (impHour < 8) {
+    //   this.hours[7].count++;
+    // } else if (impHour < 9) {
+    //   this.hours[8].count++;
+    // } else if (impHour < 10) {
+    //   this.hours[9].count++;
+    // } else if (impHour < 11) {
+    //   this.hours[10].count++;
+    // } else if (impHour < 12) {
+    //   this.hours[11].count++;
+    // } else if (impHour < 13) {
+    //   this.hours[12].count++;
+    // } else if (impHour < 14) {
+    //   this.hours[13].count++;
+    // } else if (impHour < 15) {
+    //   this.hours[14].count++;
+    // } else if (impHour < 16) {
+    //   this.hours[15].count++;
+    // } else if (impHour < 17) {
+    //   this.hours[16].count++;
+    // } else if (impHour < 18) {
+    //   this.hours[17].count++;
+    // } else if (impHour < 19) {
+    //   this.hours[18].count++;
+    // } else if (impHour < 20) {
+    //   this.hours[19].count++;
+    // } else if (impHour < 21) {
+    //   this.hours[20].count++;
+    // } else if (impHour < 22) {
+    //   this.hours[21].count++;
+    // } else if (impHour < 23) {
+    //   this.hours[22].count++;
+    // } else if (impHour < 24) {
+    //   this.hours[23].count++;
+    // }
   }
 }
