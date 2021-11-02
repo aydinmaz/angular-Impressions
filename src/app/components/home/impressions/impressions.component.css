@@ -1,3 +1,13 @@
+.imp-num {
+  width: 15%;
+  margin: auto;
+}
+
+.imp {
+  width: 35%;
+  margin: auto;
+}
+
 mat-card {
   width: 30%;
   margin: auto;
@@ -21,4 +31,3 @@ tr:nth-child(even) {
 .data-table {
   margin: 30px 30px 30px 30px;
 }
-

@@ -41,9 +41,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
   isLoaded = false;
   isLoading = false;
 
-
-displayedColumnsImp: string[] = ['hour', 'count'];
-initialHours: CountPerHour[] = [
+  hours = [];
+  initialHours: CountPerHour[] = [
     { hour: '00 - 01', count: 0 },
     { hour: '01 - 02', count: 0 },
     { hour: '02 - 03', count: 0 },
@@ -70,25 +69,21 @@ initialHours: CountPerHour[] = [
     { hour: '23 - 24', count: 0 },
   ];
 
-  hours = [];
+  @ViewChild(MatPaginator) paginator: MatPaginator | undefined;
 
-
-
-@ViewChild(MatPaginator) paginator: MatPaginator | undefined;
-
-constructor(
+  constructor(
     private service: ImpressionService,
     private snackBar: MatSnackBar
   ) {}
 
-ngOnInit(): void {
+  ngOnInit(): void {
     this.filteredOptions = this.deviceControl.valueChanges.pipe(
       startWith(''),
       map((value) => this._filter(value))
     );
   }
 
-ngAfterViewInit(): void {
+  ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator || null;
   }
 
@@ -103,7 +98,7 @@ ngAfterViewInit(): void {
   }
 
   // create simple number array for dropdown
-createIdArray = () => {
+  createIdArray = () => {
     this.data.forEach((e) => {
       if (!this.ids.includes(e.device_id)) {
         this.ids.push(e.device_id);
@@ -112,7 +107,7 @@ createIdArray = () => {
   }
 
   // count number of impressions per device
-countImp = () => {
+  countImp = () => {
     const id = this.deviceControl.value;
     let count = 0;
     // to make a deep copy
@@ -122,14 +117,13 @@ countImp = () => {
         count++;
         const impHour = new Date(element.timestamp).getHours();
         this.hours[impHour].count++;
-        // this.countImpHourly(element);
       }
     });
     this.impressions = count;
     this.impDataSource = this.hours;
   }
 
-uploadedFile = (event: any) => {
+  uploadedFile = (event: any) => {
     this.isLoading = true;
     const target: DataTransfer = event.target as DataTransfer;
     const typeOfFile = target.files[0].type;
@@ -154,18 +148,18 @@ uploadedFile = (event: any) => {
     }
   }
 
-openSnackBar(message: string, action?: string): void {
+  openSnackBar(message: string, action?: string): void {
     this.isLoading = false;
     this.dataSource.data = [];
     this.snackBar.open(message, action, { duration: 3000 });
   }
 
-  // count impressions per device per hour
-countImpHourly = (el: DeviceData) => {
-    const impHour = new Date(el.timestamp).getHours();
-    this.hours = [...this.initialHours];
-    this.hours[impHour].count++;
-   /*  if (impHour < 12) {
+  // not used anymore
+  // countImpHourly = (el: DeviceData) => {
+  //   const impHour = new Date(el.timestamp).getHours();
+  //   this.hours = [...this.initialHours];
+  //   this.hours[impHour].count++;
+    /*  if (impHour < 12) {
       if (impHour < 6) {
         if (impHour < 3) {
           if (impHour < 1) {
@@ -291,5 +285,5 @@ countImpHourly = (el: DeviceData) => {
     // } else if (impHour < 24) {
     //   this.hours[23].count++;
     // }
-  }
+  // }
 }

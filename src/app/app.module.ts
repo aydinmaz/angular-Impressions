@@ -6,11 +6,13 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './app.material.module';
 import { HomeComponent } from './components/home/home/home.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ImpressionsComponent } from './components/home/impressions/impressions.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent
+    HomeComponent,
+    ImpressionsComponent
   ],
   imports: [
     BrowserModule,

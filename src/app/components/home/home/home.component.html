@@ -40,6 +40,7 @@
         </div>
     </mat-tab>
     <mat-tab label="Impressions" *ngIf="isLoaded">
+
         <mat-card style="margin-bottom: 40px;">
             <h2>Impressions</h2>
             <form class="id-form">
@@ -61,31 +62,7 @@
             <button mat-raised-button color="primary" (click)="countImp()">Calculate impressions</button>
         </mat-card>
 
-        <div class="imp-num">
-            <mat-form-field appearance="fill">
-                <mat-label>Number of impressions for selected device</mat-label>
-                <textarea matInput placeholder="number of impressions" readonly>{{impressions}}</textarea>
-            </mat-form-field>
-        </div>
+        <app-impressions [impressionsCount]="impressions" [impDataSource]="impDataSource"></app-impressions>
 
-        <h2 align="center">Number of Impressions per hour for selected Device:</h2>
-
-        <div class=" imp">
-            <table mat-table [dataSource]="impDataSource" class="full-width mat-elevation-z8">
-
-                <ng-container matColumnDef="hour">
-                    <th mat-header-cell *matHeaderCellDef> hour </th>
-                    <td mat-cell *matCellDef="let element">{{ element.hour }}</td>
-                </ng-container>
-
-                <ng-container matColumnDef="count">
-                    <th mat-header-cell *matHeaderCellDef> number of impressions </th>
-                    <td mat-cell *matCellDef="let element">{{ element.count }}</td>
-                </ng-container>
-                <tr mat-header-row *matHeaderRowDef="displayedColumnsImp"></tr>
-                <tr mat-row *matRowDef="let row; columns: displayedColumnsImp;"></tr>
-
-            </table>
-        </div>
     </mat-tab>
 </mat-tab-group>
